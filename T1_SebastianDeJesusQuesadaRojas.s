@@ -5,7 +5,7 @@ start:
     li a1,0x100         # carga posicion de memoria
     sw a0,0(a1)         # almacena la semilla en la pos de mem
     li a2,0x0           # inicia el contador
-    li a4,0x64          # limite maximo del algoritmo
+    li a3,0x64          # limite maximo del algoritmo
 
 
 lsfr:
@@ -24,12 +24,16 @@ lsfr:
     xor t0, t1, s1
     xor s1, t2, s1
     xor s1, t3, s1
+    
+    # ULTIMO SHIFT
+    srli a0, a0, 0x1
+    or a0, a0, s1
 
 check:
-    addi a3,a3,0x1      # counter = counter + 1
-    addi a2,a2,0x4      # mem_pos = mem_pos + 4
-    sw a1,0(a2)         # [lsfr_value] -> M[mem_pos]
-    blt a3,a4,lsfr      # counter < stop_count? -> lsfr
+    addi a2,a2,0x1      # counter = counter + 1
+    addi a1,a1,0x4      # mem_pos = mem_pos + 4
+    sw a0,0(a1)         # [lsfr_value] -> M[mem_pos]
+    blt a2,a3,lsfr      # counter < stop_count? -> lsfr
     j end               # else: go to end
 
 
