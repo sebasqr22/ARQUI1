@@ -1,11 +1,13 @@
 # R -> (82)10 -> (52)16 -> (0101 0010)2
 
+
 start:
-    li a0, 0xFF         # valor inicial de la semilla
-    li a1,0x100         # carga posicion de memoria
-    sw a0,0(a1)         # almacena la semilla en la pos de mem
-    li a2,0x0           # inicia el contador
-    li a3,0x64          # limite maximo del algoritmo
+    # DEFINICION DE PARAMETROS
+    li a0, 0x52          # valor inicial de la semilla
+    li a1, 0x100         # carga posicion de memoria
+    sw a0, 0(a1)         # almacena la semilla en la pos de mem
+    li a2, 0x0           # inicia el contador
+    li a3, 0x64          # limite maximo del algoritmo
 
 
 lsfr:
@@ -21,21 +23,23 @@ lsfr:
     srli t3, t3, 0x4
     
     # OPERACIONES XOR ENTRE BITS
-    xor t0, t1, s1
-    xor s1, t2, s1
-    xor s1, t3, s1
+    xor s1, t0, t1
+    xor s1, s1, t2
+    xor s1, s1, t3
     
-    # ULTIMO SHIFT
-    srli a0, a0, 0x1
-    or a0, a0, s1
+    # ULTIMO PASOS
+    slli s1, s1, 0x7    # corrimiento del xor al primer bit
+    srli a0, a0, 0x1    # shift a la semilla para insertar res del xor
+    or a0, a0, s1       # agrega el res con una operacion or
+    
 
-check:
-    addi a2,a2,0x1      # counter = counter + 1
-    addi a1,a1,0x4      # mem_pos = mem_pos + 4
-    sw a0,0(a1)         # [lsfr_value] -> M[mem_pos]
-    blt a2,a3,lsfr      # counter < stop_count? -> lsfr
-    j end               # else: go to end
+verificacion:
+    addi a2,a2,0x1      # suma uno al contador
+    addi a1,a1,0x4      # suma 4 a la pos de memoria
+    sw a0,0(a1)         # almacena el nuevo valor en memoria
+    blt a2,a3,lsfr      # verifica si se debe hacer otro ciclo
+    j end               # salta al ciclo end
 
 
 end:
-    nop                  # end algorithm
+    nop          
