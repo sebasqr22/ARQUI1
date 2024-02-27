@@ -16,7 +16,7 @@ Se debe comenzar por instalar una versión del programa [RIPES](https://github.c
 
 
 
-## >_ COMPRESIÓN DEL ARCHIVO **T1_SebastianDeJesusQuesadaRojas.s** 📁
+## COMPRESIÓN DEL ARCHIVO **T1_SebastianDeJesusQuesadaRojas.s** 📁
 ### Definición de parámetros
 En esta sección del archivo, se define el valor inicial de la semilla, que es la letra R que según el código ASCII es 82 en decimal, teniendo entonces el valor en hexadecimal de 0x52 (esto se almacena en el registro **a0**). Posteriormente se carga la posición de memoria en el registro a1, para que posteriormente utilizando la instrucción [sw](https://msyksphinz-self.github.io/riscv-isadoc/html/rvi.html#sw) se almacene en la posición **0x100** de memoria el valor inicial de la semilla. Luego se inicia el contador en 0 en el registro a2 y guarda el valor máximo de ciclos en el registro **a3**.
 
@@ -30,17 +30,17 @@ En esta sección del archivo, se define el valor inicial de la semilla, que es l
 &nbsp; &nbsp; &nbsp; 
 &nbsp; &nbsp; &nbsp; 
 
-## >_ CICLO LSFR 💾 
-### EXTRACCIÓN DE LOS BITS CON ANDS
+### CICLO LSFR 💾 
+-> EXTRACCIÓN DE LOS BITS CON ANDS <-
 Se debe extraer los bits 8, 6, 5 y 4, por lo que se utiliza operaciones ands para esto. Se utiliza la instrucción [andi](https://msyksphinz-self.github.io/riscv-isadoc/html/rvi.html#andi), seleccionado alguno de los registros t0, t1, t2 o t3 para almacenar cada bit.
 
-### CORRIMIENTO DE BITS PARA EL MENOS SIGNIFICATIVO
+-> CORRIMIENTO DE BITS PARA EL MENOS SIGNIFICATIVO <-
 Con la operación [srli](https://msyksphinz-self.github.io/riscv-isadoc/html/rvi.html#srli) se corren los bits al bit menos significativo, para posteriomente hacer el cálculo del xor.
 
-### OPERACIONES XOR ENTRE BITS
+-> OPERACIONES XOR ENTRE BITS <-
 Teniendo todos los números en los registros antes mencionados, se procede con el cálculo usando la instrucción [xor](https://msyksphinz-self.github.io/riscv-isadoc/html/rvi.html#xor)
 
-### ULTIMO PASOS
+-> ULTIMO PASOS <-
 Primero se hace un corrimiento del resultado del xor al primer bit de la cadena, luego se le hace un shift a la semilla y con una operación [or](https://msyksphinz-self.github.io/riscv-isadoc/html/rvi.html#or) se agrega este bit al inicio de la semilla.
 
 &nbsp; &nbsp; &nbsp; 
@@ -53,7 +53,7 @@ Primero se hace un corrimiento del resultado del xor al primer bit de la cadena,
 &nbsp; &nbsp; &nbsp; 
 &nbsp; &nbsp; &nbsp; 
 
-## >_ CICLO VERIFICACIÓN 👨🏻‍💻
+### CICLO VERIFICACIÓN 👨🏻‍💻
 Primero se suma uno al contador y 4 a la posición de memoria en los registros antes mencionados. Se verifica si el contador es menor al máximo de ciclos con la instrucción [blt](https://msyksphinz-self.github.io/riscv-isadoc/html/rvi.html#blt). Si lo anterior no se cumple, se pasa al ciclo de end que termina el programa.
 
 &nbsp; &nbsp; &nbsp; 
