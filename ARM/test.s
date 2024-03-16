@@ -1,11 +1,12 @@
 // R -> (82)10 -> (52)16 -> (0101 0010)2
 
 // DEFINICION DE PARAMETROS
-mov r0, #0x52        // valor inicial de la semilla
-mov r1, #0x100       // carga posicion de memoria
-str r0, [r1]          // almacena la semilla en la pos de mem
-mov r2, #0           // inicia el contador
-mov r3, #0x64        // limite maximo del algoritmo
+_start:
+	mov r0, #0x52        // valor inicial de la semilla
+	mov r1, #0x100       // carga posicion de memoria
+	str r0, [r1]          // almacena la semilla en la pos de mem
+	mov r2, #0           // inicia el contador
+	mov r3, #0x64        // limite maximo del algoritmo
 
 lsfr:
 	// EXTRACCION DE LOS BITS CON ANDS
